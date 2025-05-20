@@ -16,6 +16,7 @@
     </div>
 
     <div class="bg-light p-4 rounded-bottom border border-top-0">
+      <form id="converter-form">
       <div class="mb-2">
       <label for="amount-to-convert" class="form-label fw-bold">Amount to Convert:</label>
       <input
@@ -49,14 +50,15 @@
         </select>
         </div>
       </div>
+    </form>
 
       <div id="currency-result" class="mb-3 text-center fw-bold"></div>
 
       <div class="d-flex gap-2 justify-content-center">
-        <button type="button" class="btn btn-dark" onclick="convert()">
+        <button type="button" id="convert" class="btn btn-dark" >
           Convert
         </button>
-        <button type="button" class="btn btn-dark" onclick="reset()">
+        <button type="button" id="reset" class="btn btn-dark">
           Reset
         </button>
       </div>
