@@ -7,25 +7,31 @@ const result = document.getElementById('currency-result');
 
 const convertCurrency = async () => {
     const amount = amountInput.value;
-    const from = fromCurrency.value;
-    const to = toCurrency.value;
+    const from = fromCurrency.value.toUpperCase();
+    const to = toCurrency.value.toUpperCase();
 
     const apikey = "cur_live_Q2Gx1DotNd1HtRxpLNQUcz01kfaDMiZtFzROduBa";
-    
+
+    const url = `https://api.currencyapi.com/v3/latest?apikey=${apikey}&base_currency=${from}&currencies=${to}`;
+
     try {
-        const response = await fetch (`https://api.currencyapi.com/v3/latest?apikey=${apikey}&base_currency=${from}&currencies=${to}`);
+        const response = await fetch(url);
         const data = await response.json();
-        console.log(data);
 
-        const conversionRate = data.data[to].value;
-        const convertedAmount = amount * conversionRate;
+        if (!data.data || !data.data[to]) {
+            throw new Error("Invalid response structure or unsupported currency.");
+        }
 
-        result.textContent = `${amount} ${from.toUpperCase()} = ${convertedAmount} ${to.toUpperCase()}`
+        const rate = data.data[to].value;
+        const convertedAmount = (amount * rate).toFixed(2);
+
+        result.textContent = `${amount} ${from} = ${convertedAmount} ${to}`;
     } catch (error) {
-        console.error('Error fetching exchange rates: ', error);
-        result.textContent = `An error occured during conversion.`;
+        console.error("Error fetching exchange rates: ", error);
+        result.textContent = "An error occurred during conversion.";
     }
 };
+
 
 function resetCurrency() {
     document.getElementById("converter-form").reset();
